@@ -24,7 +24,7 @@
     (probe-file output)) )
 
 ;(mapcar 'probe-file (mapcar 'input-file (all-files (find-system :cl-cont))))
-(let ((*default-pathname-defaults* "~/"))
-  (create-mudball (find-system :cl-cont)))
+;(let ((*default-pathname-defaults* "~/"))
+;  (create-mudball (find-system :cl-cont)))
 
 ;; EOF
