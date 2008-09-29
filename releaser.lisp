@@ -1,19 +1,24 @@
 (defpackage :release-action
   (:use :cl :sysdef :gzip-stream :archive)
-  (:export #:release-action))
+  (:export #:release-action #:create-mudball #:release-all-systems))
 
 (in-package :release-action)
 
 (defclass release-action (file-action) ())
 
-(defun output-file (system)
+(defun mudball-file (system)
   (merge-pathnames (format nil "~(~A.~A.mb~)"
                            (name-of system) (sysdef::version-string system))))
 
 (defmethod execute ((system system) (action release-action))
   (create-mudball system))
 
-(defun create-mudball (system &optional (output (output-file system)))
+(defun release-all-systems (&optional (*default-pathname-defaults* *default-pathname-defaults*))
+  (dolist (x sysdef::*systems*)
+    (with-simple-restart (continue "Ignore system ~A." x)
+      (create-mudball x))))
+
+(defun create-mudball (system &optional (output (mudball-file system)))
   (let ((*default-pathname-defaults* (component-pathname system)))  
     (with-open-gzip-file (outs output :direction :output :if-exists :supersede)
       (with-open-archive (archive outs :direction :output)
