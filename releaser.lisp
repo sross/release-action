@@ -14,7 +14,7 @@
   (create-mudball system))
 
 (defun release-all-systems (&optional (*default-pathname-defaults* *default-pathname-defaults*))
-  (dolist (x sysdef::*systems*)
+  (do-systems (x)
     (with-simple-restart (continue "Ignore system ~A." x)
       (create-mudball x))))
 
